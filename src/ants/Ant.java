@@ -5,9 +5,17 @@ import java.util.Random;
 public class Ant {
     public double x, y, theta, velocity, visionRange, visionRadius;
     public int width;
+    public Colony colony;
     private static Random RANDOM = new Random(); 
 
-    private Ant(double x, double y, double theta, double velocity, double visionRange, double visionRadius, int width) {
+    private Ant(double x,
+                double y,
+                double theta,
+                double velocity,
+                double visionRange,
+                double visionRadius,
+                int width,
+                Colony colony) {
         this.x = x;
         this.y = y;
         this.theta = theta;
@@ -15,6 +23,7 @@ public class Ant {
         this.visionRange = visionRange;
         this.visionRadius = visionRadius;
         this.width = width;
+        this.colony = colony;
     }
 
     public void move(){
@@ -58,10 +67,11 @@ public class Ant {
         private double x = 0;
         private double y = 0;
         private double theta = 0;
-        private double velocity = 10;
+        private double velocity = 5;
         private double visionRange = 40;
         private double visionRadius = 180;
-        public int width = 10;
+        private int width = 10;
+        private Colony colony;
         
         public AntBuilder(){
             x = 0;
@@ -73,7 +83,14 @@ public class Ant {
         }
 
         public Ant buildAnt() {
-            return new Ant(x, y, theta, velocity, visionRange, visionRadius, width);
+            return new Ant(x,
+                           y,
+                           theta,
+                           velocity, 
+                           visionRange, 
+                           visionRadius, 
+                           width, 
+                           colony);
         }
 
         public AntBuilder x(double x) {
@@ -106,8 +123,15 @@ public class Ant {
             return this;
         }
 
-        public AntBuilder wdith(int width) {
+        public AntBuilder width(int width) {
             this.width = width;
+            return this;
+        }
+
+        public AntBuilder colony(Colony colony) {
+            this.colony = colony;
+            this.x = colony.x;
+            this.y = colony.y;
             return this;
         }
     }
