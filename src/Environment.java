@@ -66,6 +66,11 @@ public class Environment extends JPanel implements ActionListener {
         g2D.setColor(Color.BLACK);
         for (Ant ant : ants) {
             g2D.fillOval((int) ant.x-ant.width/2, (int) ant.y-ant.width/2, ant.width, ant.width);
+            if(ant.carrying){
+                g2D.setColor(Color.GREEN);
+                g2D.fillOval((int) ant.x-ant.width/4, (int) ant.y-ant.width/4, ant.width/2, ant.width/2);
+                g2D.setColor(Color.BLACK);
+            }
         }
         for (Colony colony : colonies) {
             g2D.setColor(new Color(colony.colour));
@@ -81,6 +86,14 @@ public class Environment extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         for(Ant ant:ants){
             ant.move();
+            if(!ant.carrying) ant.followFood(foods);
+
+            ArrayList<Food> foodsC = new ArrayList<Food>();
+            for(Food food:foods){
+                if(food.distance(ant) > ant.width/2 || ant.carrying) foodsC.add(food);
+                else ant.carrying = true;
+            }
+            foods = foodsC;
         }
         repaint();
     }

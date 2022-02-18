@@ -1,12 +1,13 @@
 package ants;
 
+import java.util.ArrayList;
 import java.util.Random;
 
-public class Ant {
-    public double x, y, theta, velocity, visionRange, visionRadius;
-    public int width;
+public class Ant extends SimulatorObject{
+    public double theta, velocity, visionRange, visionRadius;
     public Colony colony;
-    private static Random RANDOM = new Random(); 
+    private static Random RANDOM = new Random();
+    public boolean carrying = false;
 
     private Ant(double x,
                 double y,
@@ -60,6 +61,32 @@ public class Ant {
             theta -= 360;
         }
         theta += ((RANDOM.nextDouble()-0.5) * 2.0)*15.0;
+    }
+
+    public double distance(double x1, double y1, double x2, double y2){
+        return Math.sqrt(Math.pow(x1-x2,2.0)+Math.pow(y1-y2,2.0));
+    }
+
+    public void followFood(ArrayList<Food> foods){
+        if(foods.isEmpty()){
+            return;
+        }
+        Food closestFood = null;
+        double closestDist = -1.0;
+        for(Food food:foods){
+            double adjustedAngle = Math.abs(angle(food) - this.theta)+90.0;
+            if(closestDist < 0 && distance(food) <= this.visionRange && adjustedAngle < this.visionRadius){
+                closestDist = distance(food);
+                closestFood = food;
+            }else if(distance(food) <= closestDist && adjustedAngle < this.visionRadius/2){
+                closestDist = distance(food);
+                closestFood = food;
+            }
+        }
+        if(closestFood == null){
+            return;
+        }
+        theta = angle(closestFood);
     }
 
     // This class makes "default" values easier to handle. Uses the Builder Pattern
