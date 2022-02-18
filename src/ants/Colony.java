@@ -1,8 +1,7 @@
 package ants;
 
-public class Colony {
-    public double x, y;
-    public int width, colour;
+public class Colony extends SimulatorObject{
+    public int colour;
 
     public Colony(double x, double y, int width, int colour){
         this.x = x;

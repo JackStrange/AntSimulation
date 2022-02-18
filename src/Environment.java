@@ -17,6 +17,7 @@ public class Environment extends JPanel implements ActionListener {
     private Timer t;
     private int antCount = 400;
     private int foodCountPC = 500; // Food per food cluster
+    private int windowSize;
 
     private Random RANDOM = new Random();
 
@@ -24,8 +25,10 @@ public class Environment extends JPanel implements ActionListener {
     private ArrayList<Colony> colonies = new ArrayList<Colony>();
     private ArrayList<Food> foods = new ArrayList<Food>();
 
-    public Environment() {
-        colonies.add(new Colony(500.0,500.0,100,0x0066FF));
+    public Environment(int windowSize) {
+        this.windowSize = windowSize;
+        SimulatorObject.windowSize = this.windowSize;
+        colonies.add(new Colony(this.windowSize/2.0,this.windowSize/2.0,100,0x0066FF));
         for (int i = 0; i < antCount; i++) {
             Ant newAnt = new Ant.AntBuilder().theta(RANDOM.nextDouble()*360.0).
                                               colony(colonies.get(0)).
@@ -90,8 +93,11 @@ public class Environment extends JPanel implements ActionListener {
 
             ArrayList<Food> foodsC = new ArrayList<Food>();
             for(Food food:foods){
-                if(food.distance(ant) > ant.width/2 || ant.carrying) foodsC.add(food);
+                if(food.distance(ant) > ant.width/2.0 || ant.carrying) foodsC.add(food);
                 else ant.carrying = true;
+            }
+            for(Colony colony:colonies){
+                if(ant.carrying && ant.colony.equals(colony) && ant.distance(colony) <= colony.width/2.0) ant.carrying = false;
             }
             foods = foodsC;
         }

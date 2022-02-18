@@ -32,8 +32,8 @@ public class Ant extends SimulatorObject{
         double ychange = -Math.sin(Math.PI / 180.0 * theta) * velocity;
 
         // Bounce if extending horizontally
-        if (x+xchange > 1000){
-            x = 1000.0;
+        if (x+xchange > SimulatorObject.windowSize){
+            x = SimulatorObject.windowSize;
             theta = 180.0 - theta;
         }else if(x+xchange < 0) {
             x = 0.0;
@@ -43,8 +43,8 @@ public class Ant extends SimulatorObject{
         }
 
         // Bounce if extending vertically
-        if (y+ychange > 1000){
-            y = 1000.0;
+        if (y+ychange > SimulatorObject.windowSize){
+            y = SimulatorObject.windowSize;
             theta = -theta;
         }else if(y+ychange < 0) {
             y = 0.0;

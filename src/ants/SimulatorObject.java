@@ -4,6 +4,7 @@ public abstract class SimulatorObject {
     public double x;
     public double y;
     public int width;
+    public static int windowSize;
 
     public double distance(SimulatorObject target){
         return Math.sqrt(Math.pow(this.x-target.x,2)+Math.pow(this.y-target.y,2));
